@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AutoNotify": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\AutoNotify.Playground\\AutoNotify.Playground.csproj"
+    }
+  }
+}

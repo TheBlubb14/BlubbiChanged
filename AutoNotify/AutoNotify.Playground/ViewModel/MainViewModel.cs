@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 using AutoNotify;
+using System.ComponentModel;
 
 namespace AutoNotify.Playground.ViewModel
 {
@@ -14,7 +15,7 @@ namespace AutoNotify.Playground.ViewModel
         /// This is the negateive from <see cref="LoadedCommand"/> <see langword="true"/> when <see langword="null"/>
         /// </summary>
         [AutoNotify]
-        private ICommand closeeedCommand;
+        private ICommand closeeeeeeeedCommand;
 
         /// <summary>
         /// This is a iother command
@@ -25,9 +26,11 @@ namespace AutoNotify.Playground.ViewModel
         [AutoNotify]
         private string title;
         [AutoNotify]
-        private string a;
+        private string a88er8;
+
+        /// <inheritdoc/>
         [AutoNotify]
-        private bool ennnn;
+        private bool enn2444snn;
 
         public ICommand LoadedCommand { get; set; }
 

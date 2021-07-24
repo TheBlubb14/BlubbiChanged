@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoNotify" Version="1.0.0" />
+    <PackageReference Include="AutoNotify" Version="1.0.0"  />
   </ItemGroup>
+
+  <!--<ItemGroup>
+    <ProjectReference Include="..\AutoNotify\AutoNotify.csproj"
+                      OutputItemType="Analyzer"
+                      ExcludeAssets="all"
+                      ReferenceOutputAssembly="false"/>
+  </ItemGroup>-->
   </Project>

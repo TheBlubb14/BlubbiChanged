@@ -46,6 +46,7 @@ namespace AutoNotify
             var INotifyPropertyChanging = NotifyPropertyChangingSymbol.ToDisplayString();
             var INotifyPropertyChanged = NotifyPropertyChangedSymbol.ToDisplayString();
 
+            // TODO: move SetpropertyCode into each setter of each property
             return
                 FormatCode($@"
 namespace {nameSpace}

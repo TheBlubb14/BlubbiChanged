@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace AutoNotify
@@ -50,16 +51,19 @@ namespace AutoNotify
             var attributeSymbol = context.Compilation.GetTypeByMetadataName("AutoNotify.AutoNotifyAttribute");
             var notifyChangingSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanging");
             var notifyChangedSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
+
             cc = new CLassGenerator(attributeSymbol, notifyChangingSymbol, notifyChangedSymbol);
+
             // group the fields by class, and generate the source
+#pragma warning disable RS1024 // Compare symbols correctly, doesnt work reliable with SymbolEqualityComparer.Default.. misses dlls
             foreach (IGrouping<INamedTypeSymbol, IFieldSymbol> group in receiver.Fields.GroupBy(f => f.ContainingType))
+#pragma warning restore RS1024 // Compare symbols correctly
             {
-                string classSource = ProcessClass(group.Key, group.ToList(), attributeSymbol, notifyChangedSymbol, notifyChangingSymbol, context);
-                context.AddSource($"{group.Key.Name}_autoNotify.cs", SourceText.From(classSource, Encoding.UTF8));
+                context.AddSource($"{group.Key.Name}_autoNotify.cs", SourceText.From(ProcessClass(group.Key, group.ToList()), Encoding.UTF8));
             }
         }
 
-        private string ProcessClass(INamedTypeSymbol classSymbol, List<IFieldSymbol> fields, INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangingSymbol, GeneratorExecutionContext context)
+        private string ProcessClass(INamedTypeSymbol classSymbol, List<IFieldSymbol> fields)
         {
             if (!classSymbol.ContainingSymbol.Equals(classSymbol.ContainingNamespace, SymbolEqualityComparer.Default))
                 return null; //TODO: issue a diagnostic that it must be top level

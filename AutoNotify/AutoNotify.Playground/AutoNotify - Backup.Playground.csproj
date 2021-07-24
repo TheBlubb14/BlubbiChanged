@@ -26,7 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AutoNotify\AutoNotify.csproj"
                       OutputItemType="Analyzer"
-                      ExcludeAssets="all"
                       ReferenceOutputAssembly="false"/>
   </ItemGroup>
 

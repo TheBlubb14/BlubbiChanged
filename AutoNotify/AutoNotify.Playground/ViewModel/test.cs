@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoNotify;
 
 namespace AutoNotify.Playground.ViewModel
 {
@@ -12,8 +13,8 @@ namespace AutoNotify.Playground.ViewModel
         /// blabla
         /// </summary>
         [AutoNotify]
-        private string title;
+        private string titale;
         [AutoNotify]
-        private string a88er8;
+        private string a88rer8;
     }
 }

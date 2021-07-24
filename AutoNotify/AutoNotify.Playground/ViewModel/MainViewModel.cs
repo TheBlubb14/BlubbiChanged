@@ -1,11 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using AutoNotify;
-using System.ComponentModel;
 
 namespace AutoNotify.Playground.ViewModel
 {

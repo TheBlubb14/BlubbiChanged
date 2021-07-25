@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoNotify
 {
-    public class CLassGenerator
+    public class ClassGenerator : IDisposable
     {
         private readonly INamedTypeSymbol NotifyPropertyChangedSymbol;
         private readonly INamedTypeSymbol NotifyPropertyChangingSymbol;
@@ -17,7 +17,7 @@ namespace AutoNotify
         private readonly Regex removeMultipleNewLinesRegex = new(@"(\r\n){2,}");
         private readonly AdhocWorkspace workspace = new();
 
-        public CLassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangingSymbol)
+        public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangingSymbol)
         {
             AttributeSymbol = attributeSymbol;
             NotifyPropertyChangedSymbol = notifyChangedSymbol;
@@ -163,6 +163,11 @@ public {field.Type} {propertyName}
                 return fieldName.ToUpper();
 
             return fieldName.Substring(0, 1).ToUpper() + fieldName.Substring(1);
+        }
+
+        public void Dispose()
+        {
+            workspace.Dispose();
         }
     }
 }

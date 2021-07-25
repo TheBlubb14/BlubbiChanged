@@ -2,10 +2,8 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace AutoNotify
@@ -39,8 +37,6 @@ namespace AutoNotify
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
 
-        private CLassGenerator cc;
-
         public void Execute(GeneratorExecutionContext context)
         {
             // retrieve the populated receiver 
@@ -52,18 +48,18 @@ namespace AutoNotify
             var notifyChangingSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanging");
             var notifyChangedSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
 
-            cc = new CLassGenerator(attributeSymbol, notifyChangingSymbol, notifyChangedSymbol);
+            using var cc = new ClassGenerator(attributeSymbol, notifyChangingSymbol, notifyChangedSymbol);
 
             // group the fields by class, and generate the source
 #pragma warning disable RS1024 // Compare symbols correctly, doesnt work reliable with SymbolEqualityComparer.Default.. misses dlls
             foreach (IGrouping<INamedTypeSymbol, IFieldSymbol> group in receiver.Fields.GroupBy(f => f.ContainingType))
 #pragma warning restore RS1024 // Compare symbols correctly
             {
-                context.AddSource($"{group.Key.Name}_autoNotify.cs", SourceText.From(ProcessClass(group.Key, group.ToList()), Encoding.UTF8));
+                context.AddSource($"{group.Key.Name}.autonotify.cs", SourceText.From(ProcessClass(cc, group.Key, group.ToList()), Encoding.UTF8));
             }
         }
 
-        private string ProcessClass(INamedTypeSymbol classSymbol, List<IFieldSymbol> fields)
+        private string ProcessClass(ClassGenerator cc, INamedTypeSymbol classSymbol, List<IFieldSymbol> fields)
         {
             if (!classSymbol.ContainingSymbol.Equals(classSymbol.ContainingNamespace, SymbolEqualityComparer.Default))
                 return null; //TODO: issue a diagnostic that it must be top level
@@ -76,7 +72,7 @@ namespace AutoNotify
         /// </summary>
         class SyntaxReceiver : ISyntaxContextReceiver
         {
-            public List<IFieldSymbol> Fields { get; } = new List<IFieldSymbol>();
+            public List<IFieldSymbol> Fields { get; } = new ();
 
             /// <summary>
             /// Called for every syntax node in the compilation, we can inspect the nodes and save any information useful for generation
@@ -97,13 +93,8 @@ namespace AutoNotify
                         }
                     }
                 }
-                else if (context.Node is IdentifierNameSyntax nameSyntax && nameSyntax.Identifier.ToString() == "miro")
-                {
-                    // https://www.google.com/search?q=roslyn+symbolfinder
-                    // https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.findsymbols.symbolfinder?view=roslyn-dotnet-3.10.0
-                    // https://stackoverflow.com/questions/34340828/symbolfinder-findreferencesasync-doesnt-find-anything
-                    ;
-                }
+
+                // TODO: issue error diagnostic when field is used and not private
             }
         }
     }

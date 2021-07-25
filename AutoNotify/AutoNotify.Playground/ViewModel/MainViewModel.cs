@@ -17,7 +17,7 @@ namespace AutoNotify.Playground.ViewModel
         /// This is a iother command
         /// </summary>
         [AutoNotify]
-        private ICommand _otherCommand;
+        private ICommand _otherCommanad;
 
         [AutoNotify]
         private string title;
@@ -28,7 +28,8 @@ namespace AutoNotify.Playground.ViewModel
         [AutoNotify]
         private bool enn2444snn;
 
-        public ICommand LoadedCommand { get; set; }
+        [AutoNotify]
+        private ICommand loadedCommand;
 
         public MainViewModel()
         {

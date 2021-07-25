@@ -6,7 +6,7 @@ namespace ConsoleApp1
     partial class Program
     {
         [AutoNotify]
-        private string blubberua;
+        private string blubber;
 
         /// <summary>
         /// HEH
@@ -16,7 +16,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            
+
         }
 
         private void a()

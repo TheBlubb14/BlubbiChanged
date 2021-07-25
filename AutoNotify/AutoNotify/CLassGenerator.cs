@@ -17,11 +17,11 @@ namespace AutoNotify
         private readonly Regex removeMultipleNewLinesRegex = new(@"(\r\n){2,}");
         private readonly AdhocWorkspace workspace = new();
 
-        public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangingSymbol)
+        public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangedSymbol)
         {
             AttributeSymbol = attributeSymbol;
-            NotifyPropertyChangedSymbol = notifyChangedSymbol;
             NotifyPropertyChangingSymbol = notifyChangingSymbol;
+            NotifyPropertyChangedSymbol = notifyChangedSymbol;
         }
 
         private string FormatCode(string code)
@@ -47,7 +47,6 @@ namespace AutoNotify
             var INotifyPropertyChanged = NotifyPropertyChangedSymbol.ToDisplayString();
 
             // TODO: make static, readonly stuff work
-            // TODO: move SetpropertyCode into each setter of each property
             return
                 FormatCode($@"
 namespace {nameSpace}

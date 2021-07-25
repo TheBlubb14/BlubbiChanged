@@ -5,14 +5,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoNotify" Version="1.0.0"  />
-  </ItemGroup>
-
   <!--<ItemGroup>
+    <PackageReference Include="AutoNotify" Version="1.0.0"  />
+  </ItemGroup>-->
+
+  <ItemGroup>
     <ProjectReference Include="..\AutoNotify\AutoNotify.csproj"
                       OutputItemType="Analyzer"
                       ExcludeAssets="all"
                       ReferenceOutputAssembly="false"/>
-  </ItemGroup>-->
+  </ItemGroup>
   </Project>

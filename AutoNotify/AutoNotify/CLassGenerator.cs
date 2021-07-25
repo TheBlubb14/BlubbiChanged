@@ -46,6 +46,8 @@ namespace AutoNotify
             var INotifyPropertyChanging = NotifyPropertyChangingSymbol.ToDisplayString();
             var INotifyPropertyChanged = NotifyPropertyChangedSymbol.ToDisplayString();
 
+            // TODO: add roslyn license to nuget
+            // TODO: make static, readonly stuff work
             // TODO: move SetpropertyCode into each setter of each property
             return
                 FormatCode($@"

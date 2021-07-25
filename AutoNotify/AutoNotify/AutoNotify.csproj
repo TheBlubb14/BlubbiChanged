@@ -1,85 +1,93 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
-    <IsRoslynComponent>true</IsRoslynComponent>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<IsRoslynComponent>true</IsRoslynComponent>
 
+		<Author>Daniel Henk</Author>
+		<Authors>$(Author)</Authors>
+		<Copyright>Copyright © Daniel Henk $([System.DateTime]::Now.Year)</Copyright>
+		<PackageDescription>Automatically generate code to add INotifyPropertyChanged and INotifyPropertyChanging to your properties.</PackageDescription>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;</PackageTags>
+		<RepositoryUrl>https://github.com/TheBlubb14/AutoNotify</RepositoryUrl>
 
-    <Author>Daniel Henk</Author>
-    <Authors>$(Author)</Authors>
-    <Copyright>Copyright © Daniel Henk $([System.DateTime]::Now.Year)</Copyright>
-    <PackageDescription>Automatically generate code to add INotifyPropertyChanged and INotifyPropertyChanging to your properties.</PackageDescription>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;</PackageTags>
-    <RepositoryUrl>https://github.com/TheBlubb14/AutoNotify</RepositoryUrl>
+		<!-- Generates a package at build -->
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <!-- Generates a package at build -->
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<!-- Do not include the generator as a lib dependency -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		
+		<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+		<!--<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>-->
+	</PropertyGroup>
 
-    <!-- Do not include the generator as a lib dependency -->
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    <!--<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>-->
-    <!--<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>-->
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.10.0" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.10.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.10.0" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.10.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="Humanizer.Core" Version="2.2.0" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgHumanizer_Core)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="Humanizer.Core" Version="2.2.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgHumanizer_Core)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="System.Composition.TypedParts" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgSystem_Composition_TypedParts)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="System.Composition.TypedParts" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgSystem_Composition_TypedParts)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="System.Composition.Hosting" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgSystem_Composition_Hosting)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="System.Composition.Hosting" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgSystem_Composition_Hosting)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="System.Composition.Runtime" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgSystem_Composition_Runtime)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="System.Composition.Runtime" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgSystem_Composition_Runtime)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<PackageReference Include="System.Composition.AttributedModel" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgSystem_Composition_AttributedModel)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    <PackageReference Include="System.Composition.AttributedModel" Version="1.0.31" PrivateAssets="all" GeneratePathProperty="true" />
-    <None Include="$(PkgSystem_Composition_AttributedModel)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="..\licenses\*.*" Pack="true" PackagePath="license-%(FileName)%(Extension)" Visible="false" />
+	</ItemGroup>
 
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-  </ItemGroup>
+	<ItemGroup>
+	  <None Remove="bin\**" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);AutoNotify-GetDependencyTargetPaths</GetTargetPathDependsOn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);AutoNotify-GetDependencyTargetPaths</GetTargetPathDependsOn>
+	</PropertyGroup>
 
-  <Target Name="AutoNotify-GetDependencyTargetPaths">
-    <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PKGHumanizer_Core)\lib\netstandard1.0\Humanizer.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_TypedParts)\lib\netstandard1.0\System.Composition.TypedParts.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_Hosting)\lib\netstandard1.0\System.Composition.Hosting.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_Runtime)\lib\netstandard1.0\System.Composition.Runtime.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_AttributedModel)\lib\netstandard1.0\System.Composition.AttributedModel.dll" IncludeRuntimeDependency="false" />
-    </ItemGroup>
-  </Target>
+	<Target Name="AutoNotify-GetDependencyTargetPaths">
+		<ItemGroup>
+			<TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PKGHumanizer_Core)\lib\netstandard1.0\Humanizer.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_TypedParts)\lib\netstandard1.0\System.Composition.TypedParts.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_Hosting)\lib\netstandard1.0\System.Composition.Hosting.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_Runtime)\lib\netstandard1.0\System.Composition.Runtime.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_Composition_AttributedModel)\lib\netstandard1.0\System.Composition.AttributedModel.dll" IncludeRuntimeDependency="false" />
+		</ItemGroup>
+	</Target>
 
-  <!--<PropertyGroup>
-    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-  </PropertyGroup>
+	<!-- This would include all dlls. Including the system dlls which are implicit given through the compiler.-->
+	<!--
+	<PropertyGroup>
+		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+	</PropertyGroup>
 
-  <Target Name="GetDependencyTargetPaths" AfterTargets="ResolvePackageDependenciesForBuild">
-    <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitions)" IncludeRuntimeDependency="true" CopyToOutputDirectory="PreserveNewest" />
-      <None Include="@(ResolvedCompileFileDefinitions)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	<Target Name="GetDependencyTargetPaths" AfterTargets="ResolvePackageDependenciesForBuild">
+		<ItemGroup>
+			<TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitions)" IncludeRuntimeDependency="true" CopyToOutputDirectory="PreserveNewest" />
+			<None Include="@(ResolvedCompileFileDefinitions)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-    </ItemGroup>
-  </Target>-->
+		</ItemGroup>
+	</Target>
+	-->
 
 </Project>

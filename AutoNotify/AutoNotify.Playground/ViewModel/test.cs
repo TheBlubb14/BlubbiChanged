@@ -15,6 +15,12 @@ namespace AutoNotify.Playground.ViewModel
         [AutoNotify]
         private string titale;
         [AutoNotify]
-        private string a88rer8;
+        private string miro;
+
+        private void a()
+        {
+            var a = miro.Length == 0;
+            miro = "aaaa";
+        }
     }
 }

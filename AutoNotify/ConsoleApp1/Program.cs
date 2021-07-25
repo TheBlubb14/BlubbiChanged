@@ -16,6 +16,13 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            
+        }
+
+        private void a()
+        {
+            var a = miro.Length == 0;
+            miro = "aaaa";
         }
     }
 }

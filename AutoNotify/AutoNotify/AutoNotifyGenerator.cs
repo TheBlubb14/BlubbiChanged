@@ -97,6 +97,13 @@ namespace AutoNotify
                         }
                     }
                 }
+                else if (context.Node is IdentifierNameSyntax nameSyntax && nameSyntax.Identifier.ToString() == "miro")
+                {
+                    // https://www.google.com/search?q=roslyn+symbolfinder
+                    // https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.findsymbols.symbolfinder?view=roslyn-dotnet-3.10.0
+                    // https://stackoverflow.com/questions/34340828/symbolfinder-findreferencesasync-doesnt-find-anything
+                    ;
+                }
             }
         }
     }

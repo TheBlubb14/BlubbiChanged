@@ -46,7 +46,6 @@ namespace AutoNotify
             var INotifyPropertyChanging = NotifyPropertyChangingSymbol.ToDisplayString();
             var INotifyPropertyChanged = NotifyPropertyChangedSymbol.ToDisplayString();
 
-            // TODO: add roslyn license to nuget
             // TODO: make static, readonly stuff work
             // TODO: move SetpropertyCode into each setter of each property
             return
@@ -59,20 +58,6 @@ namespace {nameSpace}
         {PropertyChangedEventHandler(classSymbol)}
 
         {GenerateProperties(fields)}
-
-        protected T SetProperty<T>(ref T field, T value, [global::System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
-        {{
-            if (global::System.Collections.Generic.EqualityComparer<T>.Default.Equals(field, value))
-                return value;
-
-            this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(propertyName));
-
-            field = value;
-
-            this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(propertyName));
-
-            return value;
-        }}
     }}
 }}
 ");
@@ -127,7 +112,17 @@ namespace {nameSpace}
 public {field.Type} {propertyName} 
 {{
     get => this.{field.Name};
-    set => SetProperty(ref this.{field.Name}, value);
+    set
+    {{
+        if (global::System.Collections.Generic.EqualityComparer<{field.Type}>.Default.Equals(this.{field.Name}, value))
+            return;
+
+        this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""{propertyName}""));
+
+        this.{field.Name} = value;
+
+        this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""{propertyName}""));
+    }}
 }}
 ";
         }

@@ -13,9 +13,11 @@ namespace AutoNotify.Playground.ViewModel
         /// blabla
         /// </summary>
         [AutoNotify]
-        private string titale;
+        private string titaleaaa;
         [AutoNotify]
         private string miro;
+
+
 
         private void a()
         {

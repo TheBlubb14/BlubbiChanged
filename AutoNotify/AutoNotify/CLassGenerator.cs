@@ -1,11 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Formatting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace AutoNotify
 {
@@ -14,7 +11,6 @@ namespace AutoNotify
         private readonly INamedTypeSymbol NotifyPropertyChangedSymbol;
         private readonly INamedTypeSymbol NotifyPropertyChangingSymbol;
         private readonly INamedTypeSymbol AttributeSymbol;
-        private readonly Regex removeMultipleNewLinesRegex = new(@"(\r\n){2,}");
         private readonly AdhocWorkspace workspace = new();
 
         public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangedSymbol)
@@ -24,21 +20,6 @@ namespace AutoNotify
             NotifyPropertyChangedSymbol = notifyChangedSymbol;
         }
 
-        private string FormatCode(string code)
-        {
-            var tree = CSharpSyntaxTree.ParseText(code);
-            var root = tree.GetCompilationUnitRoot();
-
-            // Format C#
-            var formatted = Formatter.Format(root, workspace).ToFullString();
-
-            // Remove multiple empty lines
-            formatted = removeMultipleNewLinesRegex.Replace(formatted, Environment.NewLine + Environment.NewLine);
-
-            // Remove leading and trailing newlines
-            return formatted.Trim(Environment.NewLine.ToCharArray());
-        }
-
         public string Construct(INamedTypeSymbol classSymbol, List<IFieldSymbol> fields)
         {
             var nameSpace = classSymbol.ContainingNamespace.ToDisplayString();
@@ -46,9 +27,8 @@ namespace AutoNotify
             var INotifyPropertyChanging = NotifyPropertyChangingSymbol.ToDisplayString();
             var INotifyPropertyChanged = NotifyPropertyChangedSymbol.ToDisplayString();
 
-            // TODO: make static, readonly stuff work
             return
-                FormatCode($@"
+                Utils.FormatCode($@"
 namespace {nameSpace}
 {{
     public partial class {className} : {INotifyPropertyChanging}, {INotifyPropertyChanged}
@@ -59,7 +39,7 @@ namespace {nameSpace}
         {GenerateProperties(fields)}
     }}
 }}
-");
+", workspace);
         }
 
         private string PropertyChangedEventHandler(INamedTypeSymbol classSymbol)
@@ -106,19 +86,30 @@ namespace {nameSpace}
                 return null;
             }
 
+            if (field.IsReadOnly)
+            {
+                // Not supported
+                // TODO: issue diagnostic
+                return null;
+            }
+
+            var fieldName = field.Name;
+            if (!field.IsStatic)
+                fieldName = "this." + fieldName;
+
             return $@"
 {GetSummary(field)}
 public {field.Type} {propertyName} 
 {{
-    get => this.{field.Name};
+    get => {fieldName};
     set
     {{
-        if (global::System.Collections.Generic.EqualityComparer<{field.Type}>.Default.Equals(this.{field.Name}, value))
+        if (global::System.Collections.Generic.EqualityComparer<{field.Type}>.Default.Equals({fieldName}, value))
             return;
 
         this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""{propertyName}""));
 
-        this.{field.Name} = value;
+        {fieldName} = value;
 
         this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""{propertyName}""));
     }}

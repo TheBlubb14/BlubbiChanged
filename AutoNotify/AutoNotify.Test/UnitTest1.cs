@@ -141,7 +141,7 @@ namespace UnitTest
                     .SetName("Normal property");
 
                 yield return new TestCaseData(
-                @"
+                    @"
 using System;
 using AutoNotify;
 
@@ -153,7 +153,7 @@ namespace UnitTest
         private string _normalProperty;
     }
 }",
-                @"
+                    @"
 namespace UnitTest
 {
     public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
@@ -183,10 +183,10 @@ namespace UnitTest
     }
 }
 ")
-                .SetName("Normal property with underscore");
+                    .SetName("Normal property with underscore");
 
                 yield return new TestCaseData(
-                @"
+                    @"
 using System;
 using AutoNotify;
 
@@ -203,7 +203,7 @@ namespace UnitTest
         private int normalPropertyWithSummary;
     }
 }",
-                @"
+                    @"
 namespace UnitTest
 {
     public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
@@ -238,7 +238,7 @@ namespace UnitTest
     }
 }
 ")
-                .SetName("Normal property with summary");
+                    .SetName("Normal property with summary");
 
                 yield return new TestCaseData(
                     @"
@@ -284,6 +284,222 @@ namespace UnitTest
 }
 ")
                     .SetName("Static property");
+
+                yield return new TestCaseData(
+                    @"
+using System;
+using AutoNotify;
+
+namespace UnitTest
+{
+    private partial class UnitTestClass
+    {
+        [AutoNotify(PropertyName = ""NotSoNormalProperty"")]
+        private string normalProperty;
+    }
+}",
+                    @"
+namespace UnitTest
+{
+    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <inheritdoc/>
+        public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+
+        /// <inheritdoc/>
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public string NotSoNormalProperty
+        {
+            get => this.normalProperty;
+            set
+            {
+                if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.normalProperty, value))
+                    return;
+
+                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""NotSoNormalProperty""));
+
+                this.normalProperty = value;
+
+                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""NotSoNormalProperty""));
+            }
+        }
+
+    }
+}
+")
+                    .SetName("Property with custom name");
+
+                yield return new TestCaseData(
+                    @"
+using System;
+using AutoNotify;
+
+namespace UnitTest
+{
+    private partial class UnitTestClass
+    {
+        [AutoNotify]
+        private string property1;
+        
+        [AutoNotify]
+        private bool property2;
+
+        [AutoNotify]
+        private int property3;
+    }
+}",
+                    @"
+namespace UnitTest
+{
+    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <inheritdoc/>
+        public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+
+        /// <inheritdoc/>
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public string Property1
+        {
+            get => this.property1;
+            set
+            {
+                if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.property1, value))
+                    return;
+
+                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""Property1""));
+
+                this.property1 = value;
+
+                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""Property1""));
+            }
+        }
+
+        public bool Property2
+        {
+            get => this.property2;
+            set
+            {
+                if (global::System.Collections.Generic.EqualityComparer<bool>.Default.Equals(this.property2, value))
+                    return;
+
+                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""Property2""));
+
+                this.property2 = value;
+
+                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""Property2""));
+            }
+        }
+
+        public int Property3
+        {
+            get => this.property3;
+            set
+            {
+                if (global::System.Collections.Generic.EqualityComparer<int>.Default.Equals(this.property3, value))
+                    return;
+
+                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""Property3""));
+
+                this.property3 = value;
+
+                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""Property3""));
+            }
+        }
+
+    }
+}
+")
+                    .SetName("Multiple properties");
+
+                yield return new TestCaseData(
+                    @"
+using System;
+using AutoNotify;
+
+namespace UnitTest
+{
+    private partial class UnitTestClass
+    {
+        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+
+        [AutoNotify]
+        private string normalProperty;
+    }
+}",
+                    @"
+namespace UnitTest
+{
+    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <inheritdoc/>
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public string NormalProperty
+        {
+            get => this.normalProperty;
+            set
+            {
+                if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.normalProperty, value))
+                    return;
+
+                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""NormalProperty""));
+
+                this.normalProperty = value;
+
+                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""NormalProperty""));
+            }
+        }
+
+    }
+}
+")
+                    .SetName("PropertyChanging eventhandler already implemented");
+
+                yield return new TestCaseData(
+                    @"
+using System;
+using AutoNotify;
+
+namespace UnitTest
+{
+    private partial class UnitTestClass
+    {
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        [AutoNotify]
+        private string normalProperty;
+    }
+}",
+                    @"
+namespace UnitTest
+{
+    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <inheritdoc/>
+        public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+
+        public string NormalProperty
+        {
+            get => this.normalProperty;
+            set
+            {
+                if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.normalProperty, value))
+                    return;
+
+                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs(""NormalProperty""));
+
+                this.normalProperty = value;
+
+                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs(""NormalProperty""));
+            }
+        }
+
+    }
+}
+")
+                    .SetName("PropertyChanged eventhandler already implemented");
             }
         }
     }

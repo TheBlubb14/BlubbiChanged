@@ -11,7 +11,7 @@ namespace ConsoleApp1
         /// <summary>
         /// HEH <see cref="miro"/> <see langword="true"/>
         /// </summary>
-        [AutoNotify]
+        [AutoNotify(PropertyName = "blubb")]
         private string miro;
 
         //[AutoNotify]
@@ -33,22 +33,6 @@ namespace ConsoleApp1
                 staticstring = value;
 
                 this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("Staticstring"));
-            }
-        }
-
-        public string Readonlystring
-        {
-            get => this.readonlystring;
-            set
-            {
-                if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.readonlystring, value))
-                    return;
-
-                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs("Readonlystring"));
-
-                this.readonlystring = value;
-
-                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("Readonlystring"));
             }
         }
 

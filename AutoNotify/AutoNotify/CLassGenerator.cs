@@ -9,15 +9,19 @@ namespace AutoNotify
     public class ClassGenerator : IDisposable
     {
         private readonly INamedTypeSymbol NotifyPropertyChangedSymbol;
+        private readonly INamedTypeSymbol NotifyPropertyChangedHandlerSymbol;
         private readonly INamedTypeSymbol NotifyPropertyChangingSymbol;
+        private readonly INamedTypeSymbol NotifyPropertyChangingHandlerSymbol;
         private readonly INamedTypeSymbol AttributeSymbol;
         private readonly AdhocWorkspace workspace = new();
 
-        public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangedSymbol)
+        public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangingHandlerSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangedHandlerSymbol)
         {
             AttributeSymbol = attributeSymbol;
             NotifyPropertyChangingSymbol = notifyChangingSymbol;
+            NotifyPropertyChangingHandlerSymbol = notifyChangingHandlerSymbol;
             NotifyPropertyChangedSymbol = notifyChangedSymbol;
+            NotifyPropertyChangedHandlerSymbol = notifyChangedHandlerSymbol;
         }
 
         public string Construct(INamedTypeSymbol classSymbol, List<IFieldSymbol> fields)
@@ -26,6 +30,11 @@ namespace AutoNotify
             var className = classSymbol.Name;
             var INotifyPropertyChanging = NotifyPropertyChangingSymbol.ToDisplayString();
             var INotifyPropertyChanged = NotifyPropertyChangedSymbol.ToDisplayString();
+            var eventMembers = classSymbol
+                .GetMembers()
+                .Where(x => x.Kind == SymbolKind.Event)
+                .Cast<IEventSymbol>()
+                .ToList();
 
             return
                 Utils.FormatCode($@"
@@ -33,8 +42,7 @@ namespace {nameSpace}
 {{
     public partial class {className} : {INotifyPropertyChanging}, {INotifyPropertyChanged}
     {{
-        {PropertyChangingEventHandler(classSymbol)}
-        {PropertyChangedEventHandler(classSymbol)}
+        {PropertyChangingEventHandler(eventMembers)} {PropertyChangedEventHandler(eventMembers)}
 
         {GenerateProperties(fields)}
     }}
@@ -42,20 +50,20 @@ namespace {nameSpace}
 ", workspace);
         }
 
-        private string PropertyChangedEventHandler(INamedTypeSymbol classSymbol)
+        private string PropertyChangedEventHandler(List<IEventSymbol> eventMembers)
         {
-            return classSymbol.Interfaces.Contains(NotifyPropertyChangedSymbol)
+            return eventMembers.Any(x => x.Type.Equals(NotifyPropertyChangedHandlerSymbol, SymbolEqualityComparer.Default))
                 ? ""
                 : "/// <inheritdoc/>" + Environment.NewLine +
-                    "public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;" + Environment.NewLine;
+                    "public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;" + Environment.NewLine + Environment.NewLine;
         }
 
-        private string PropertyChangingEventHandler(INamedTypeSymbol classSymbol)
+        private string PropertyChangingEventHandler(List<IEventSymbol> eventMembers)
         {
-            return classSymbol.Interfaces.Contains(NotifyPropertyChangingSymbol)
+            return eventMembers.Any(x => x.Type.Equals(NotifyPropertyChangingHandlerSymbol, SymbolEqualityComparer.Default))
                 ? ""
                 : "/// <inheritdoc/>" + Environment.NewLine +
-                    "public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;" + Environment.NewLine;
+                    "public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;" + Environment.NewLine + Environment.NewLine;
         }
 
         private string GenerateProperties(List<IFieldSymbol> fields)

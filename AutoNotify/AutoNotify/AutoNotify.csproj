@@ -14,15 +14,10 @@
 		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;</PackageTags>
 		<RepositoryUrl>https://github.com/TheBlubb14/AutoNotify</RepositoryUrl>
 
-		<!-- Generates a package at build -->
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
-		<!-- Do not include the generator as a lib dependency -->
 		<IncludeBuildOutput>false</IncludeBuildOutput>
-		
 		<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-		<!--<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>-->
 	</PropertyGroup>
 
 	<ItemGroup>

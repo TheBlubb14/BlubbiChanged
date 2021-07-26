@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AutoNotify
 {
-    // https://github.com/dotnet/roslyn-sdk/blob/main/samples/CSharp/SourceGenerators/SourceGeneratorSamples/AutoNotifyGenerator.cs
+    // Sample from: https://github.com/dotnet/roslyn-sdk/blob/main/samples/CSharp/SourceGenerators/SourceGeneratorSamples/AutoNotifyGenerator.cs
     [Generator]
     public class AutoNotifyGenerator : ISourceGenerator
     {
@@ -19,6 +19,9 @@ namespace AutoNotify
     [global::System.Diagnostics.Conditional(""AutoNotifyGenerator_DEBUG"")]
     internal sealed class AutoNotifyAttribute : global::System.Attribute
     {
+        /// <summary>
+        /// Set your own property name
+        /// </summary>
         public string PropertyName { get; set; }
 
         public AutoNotifyAttribute()
@@ -30,27 +33,24 @@ namespace AutoNotify
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            // Register the attribute source
             context.RegisterForPostInitialization((i) => i.AddSource("AutoNotifyAttribute", attributeText));
 
-            // Register a syntax receiver that will be created for each generation pass
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
 
         public void Execute(GeneratorExecutionContext context)
         {
-            // retrieve the populated receiver 
             if (context.SyntaxContextReceiver is not SyntaxReceiver receiver)
                 return;
 
-            // get the added attribute, INotifyPropertyChanged and INotifyPropertyChanging
             var attributeSymbol = context.Compilation.GetTypeByMetadataName("AutoNotify.AutoNotifyAttribute");
             var notifyChangingSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanging");
+            var notifyChangingHandlerSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.PropertyChangingEventHandler");
             var notifyChangedSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
+            var notifyChangedHandlerSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.PropertyChangedEventHandler");
 
-            using var cc = new ClassGenerator(attributeSymbol, notifyChangingSymbol, notifyChangedSymbol);
+            using var cc = new ClassGenerator(attributeSymbol, notifyChangingSymbol, notifyChangingHandlerSymbol, notifyChangedSymbol, notifyChangedHandlerSymbol);
 
-            // group the fields by class, and generate the source
 #pragma warning disable RS1024 // Compare symbols correctly, doesnt work reliable with SymbolEqualityComparer.Default.. misses dlls
             foreach (IGrouping<INamedTypeSymbol, IFieldSymbol> group in receiver.Fields.GroupBy(f => f.ContainingType))
 #pragma warning restore RS1024 // Compare symbols correctly
@@ -67,25 +67,17 @@ namespace AutoNotify
             return cc.Construct(classSymbol, fields);
         }
 
-        /// <summary>
-        /// Created on demand before each generation pass
-        /// </summary>
         class SyntaxReceiver : ISyntaxContextReceiver
         {
-            public List<IFieldSymbol> Fields { get; } = new ();
+            public List<IFieldSymbol> Fields { get; } = new();
 
-            /// <summary>
-            /// Called for every syntax node in the compilation, we can inspect the nodes and save any information useful for generation
-            /// </summary>
             public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {
-                // any field with at least one attribute is a candidate for property generation
                 if (context.Node is FieldDeclarationSyntax fieldDeclarationSyntax
                     && fieldDeclarationSyntax.AttributeLists.Count > 0)
                 {
                     foreach (VariableDeclaratorSyntax variable in fieldDeclarationSyntax.Declaration.Variables)
                     {
-                        // Get the symbol being declared by the field, and keep it if its annotated
                         IFieldSymbol fieldSymbol = context.SemanticModel.GetDeclaredSymbol(variable) as IFieldSymbol;
                         if (fieldSymbol.GetAttributes().Any(ad => ad.AttributeClass.ToDisplayString() == "AutoNotify.AutoNotifyAttribute"))
                         {

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoNotify\AutoNotify.csproj" />
+    <ProjectReference Include="..\BlubbiChanged\BlubbiChanged.csproj" />
   </ItemGroup>
 
 </Project>

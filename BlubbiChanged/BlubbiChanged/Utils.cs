@@ -6,8 +6,8 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-[assembly: InternalsVisibleTo("AutoNotify.Test")]
-namespace AutoNotify
+[assembly: InternalsVisibleTo("BlubbiChanged.Test")]
+namespace BlubbiChanged
 {
     internal static class Utils
     {

@@ -12,7 +12,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;</PackageTags>
-		<RepositoryUrl>https://github.com/TheBlubb14/AutoNotify</RepositoryUrl>
+		<RepositoryUrl>https://github.com/TheBlubb14/BlubbiChanged</RepositoryUrl>
 
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
@@ -54,10 +54,10 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);AutoNotify-GetDependencyTargetPaths</GetTargetPathDependsOn>
+		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);BlubbiChanged-GetDependencyTargetPaths</GetTargetPathDependsOn>
 	</PropertyGroup>
 
-	<Target Name="AutoNotify-GetDependencyTargetPaths">
+	<Target Name="BlubbiChanged-GetDependencyTargetPaths">
 		<ItemGroup>
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGHumanizer_Core)\lib\netstandard1.0\Humanizer.dll" IncludeRuntimeDependency="false" />

@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AutoNotify
+namespace BlubbiChanged
 {
     // Sample from: https://github.com/dotnet/roslyn-sdk/blob/main/samples/CSharp/SourceGenerators/SourceGeneratorSamples/AutoNotifyGenerator.cs
     [Generator]
     public class AutoNotifyGenerator : ISourceGenerator
     {
         public const string attributeText = @"
-namespace AutoNotify
+namespace BlubbiChanged
 {
     [global::System.AttributeUsage(global::System.AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
     [global::System.Diagnostics.Conditional(""AutoNotifyGenerator_DEBUG"")]
@@ -43,7 +43,7 @@ namespace AutoNotify
             if (context.SyntaxContextReceiver is not SyntaxReceiver receiver)
                 return;
 
-            var attributeSymbol = context.Compilation.GetTypeByMetadataName("AutoNotify.AutoNotifyAttribute");
+            var attributeSymbol = context.Compilation.GetTypeByMetadataName("BlubbiChanged.AutoNotifyAttribute");
             var notifyChangingSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanging");
             var notifyChangingHandlerSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.PropertyChangingEventHandler");
             var notifyChangedSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
@@ -55,7 +55,7 @@ namespace AutoNotify
             foreach (IGrouping<INamedTypeSymbol, IFieldSymbol> group in receiver.Fields.GroupBy(f => f.ContainingType))
 #pragma warning restore RS1024 // Compare symbols correctly
             {
-                context.AddSource($"{group.Key.Name}.autonotify.cs", SourceText.From(ProcessClass(cc, group.Key, group.ToList()), Encoding.UTF8));
+                context.AddSource($"{group.Key.Name}.blubbichanged.cs", SourceText.From(ProcessClass(cc, group.Key, group.ToList()), Encoding.UTF8));
             }
         }
 
@@ -79,7 +79,7 @@ namespace AutoNotify
                     foreach (VariableDeclaratorSyntax variable in fieldDeclarationSyntax.Declaration.Variables)
                     {
                         IFieldSymbol fieldSymbol = context.SemanticModel.GetDeclaredSymbol(variable) as IFieldSymbol;
-                        if (fieldSymbol.GetAttributes().Any(ad => ad.AttributeClass.ToDisplayString() == "AutoNotify.AutoNotifyAttribute"))
+                        if (fieldSymbol.GetAttributes().Any(ad => ad.AttributeClass.ToDisplayString() == "BlubbiChanged.AutoNotifyAttribute"))
                         {
                             Fields.Add(fieldSymbol);
                         }

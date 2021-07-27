@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <!--<ItemGroup>
-    <PackageReference Include="AutoNotify" Version="1.0.0"  />
+    <PackageReference Include="BlubbiChanged" Version="1.0.0"  />
   </ItemGroup>-->
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoNotify\AutoNotify.csproj"
+    <ProjectReference Include="..\BlubbiChanged\BlubbiChanged.csproj"
                       OutputItemType="Analyzer"
                       ExcludeAssets="all"
                       ReferenceOutputAssembly="false"/>

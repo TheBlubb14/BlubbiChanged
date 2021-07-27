@@ -1,4 +1,4 @@
-﻿using AutoNotify;
+﻿using BlubbiChanged;
 using System;
 
 namespace ConsoleApp1

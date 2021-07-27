@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace AutoNotify.Test
+namespace BlubbiChanged.Test
 {
     public class Tests
     {
@@ -98,7 +98,7 @@ namespace AutoNotify.Test
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -143,7 +143,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -188,7 +188,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -243,7 +243,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -288,7 +288,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -333,7 +333,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -416,7 +416,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {
@@ -460,7 +460,7 @@ namespace UnitTest
                 yield return new TestCaseData(
                     @"
 using System;
-using AutoNotify;
+using BlubbiChanged;
 
 namespace UnitTest
 {

@@ -65,7 +65,7 @@ namespace AutoNotify.Test
         [Test, Explicit]
         public void DebugGenerator()
         {
-            var input = File.ReadAllText(@"D:\Entwicklung\GitHub\Projects\AutoNotify\AutoNotify\AutoNotify.Playground\ViewModel\test.cs");
+            var input = File.ReadAllText(@"..\..\..\..\ConsoleApp1\Program.cs");
             var sources = new Dictionary<string, string>()
             {
                 { "test.cs", input }

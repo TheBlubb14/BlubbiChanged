@@ -11,7 +11,7 @@ namespace BlubbiChanged
 {
     internal static class Utils
     {
-        private static readonly Regex removeMultipleNewLinesRegex = new(@"(\r\n){2,}");
+        private static readonly Regex removeMultipleNewLinesRegex = new($@"({Environment.NewLine}){{2,}}");
 
         internal static string FormatCode(string code, Workspace workspace)
         {
@@ -29,7 +29,7 @@ namespace BlubbiChanged
             formatted = removeMultipleNewLinesRegex.Replace(formatted, Environment.NewLine + Environment.NewLine);
 
             // Remove leading and trailing newlines
-            return formatted.Trim('\r', 'n');
+            return formatted.Trim('\r', '\n');
         }
     }
 }

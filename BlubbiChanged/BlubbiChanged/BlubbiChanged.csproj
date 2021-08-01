@@ -11,7 +11,7 @@
 		<PackageDescription>Automatically generate code to add INotifyPropertyChanged and INotifyPropertyChanging to your properties.</PackageDescription>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;</PackageTags>
+		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;MVVM</PackageTags>
 		<RepositoryUrl>https://github.com/TheBlubb14/BlubbiChanged</RepositoryUrl>
 
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>

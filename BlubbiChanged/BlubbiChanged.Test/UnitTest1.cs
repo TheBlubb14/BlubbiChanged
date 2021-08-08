@@ -13,9 +13,9 @@ namespace BlubbiChanged.Test
 {
     public class Tests
     {
-        public static Dictionary<string, string> GetGeneratedOutput<TGenerator>(IDictionary<string, string> sources, bool failOnInvalidSource = false)
+        public static Dictionary<string, string> GetGeneratedOutput<TGenerator>(IDictionary<string, string> sources, bool failOnInvalidSource = false, bool failOnDiagnostigs = true)
            where TGenerator : ISourceGenerator, new()
-           => GetGeneratedOutput(sources, () => new TGenerator(), failOnInvalidSource);
+           => GetGeneratedOutput(sources, () => new TGenerator(), failOnInvalidSource, failOnDiagnostigs);
 
         public static CSharpCompilation Compile(IDictionary<string, string> sources)
                     => CSharpCompilation.Create(
@@ -28,7 +28,7 @@ namespace BlubbiChanged.Test
                         },
                         new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        public static Dictionary<string, string> GetGeneratedOutput(IDictionary<string, string> sources, Func<ISourceGenerator> makeGenerator, bool failOnInvalidSource = false)
+        public static Dictionary<string, string> GetGeneratedOutput(IDictionary<string, string> sources, Func<ISourceGenerator> makeGenerator, bool failOnInvalidSource = false, bool failOnDiagnostigs = true)
         {
             var compilation = Compile(sources);
 
@@ -42,7 +42,11 @@ namespace BlubbiChanged.Test
             var driver = CSharpGeneratorDriver.Create(generator);
             _ = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var generateDiagnostics);
             var output = outputCompilation.SyntaxTrees.ToDictionary(tree => tree.FilePath, tree => tree.ToString());
-            FailIfError(generateDiagnostics);
+
+            if (failOnDiagnostigs)
+            {
+                FailIfError(generateDiagnostics);
+            }
 
             return output;
         }
@@ -70,7 +74,7 @@ namespace BlubbiChanged.Test
             {
                 { "test.cs", input }
             };
-            var outputs = GetGeneratedOutput<AutoNotifyGenerator>(sources);
+            var outputs = GetGeneratedOutput<BlubbiChangedGenerator>(sources, failOnInvalidSource: false, failOnDiagnostigs: false);
             ;
         }
 
@@ -81,7 +85,7 @@ namespace BlubbiChanged.Test
             {
                 { "test.cs", input }
             };
-            var outputs = GetGeneratedOutput<AutoNotifyGenerator>(sources);
+            var outputs = GetGeneratedOutput<BlubbiChangedGenerator>(sources);
             Assert.That(outputs.Last().Value, Is.EqualTo(Utils.FormatCode(expected, Workspace)));
         }
 

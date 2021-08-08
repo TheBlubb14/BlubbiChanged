@@ -14,27 +14,14 @@ namespace ConsoleApp1
         [AutoNotify(PropertyName = "blubb")]
         private string miro;
 
-        //[AutoNotify]
+        [AutoNotify]
         private static string staticstring;
 
-        //[AutoNotify]
-        private readonly string readonlystring;
+        [AutoNotify]
+        private readonly string readonlystrings;
 
-        public string Staticstring
-        {
-            get => staticstring;
-            set
-            {
-                if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(staticstring, value))
-                    return;
-
-                this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs("Staticstring"));
-
-                staticstring = value;
-
-                this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("Staticstring"));
-            }
-        }
+        [AutoNotify]
+        private string _;
 
         static void Main(string[] args)
         {

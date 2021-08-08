@@ -13,10 +13,12 @@ namespace BlubbiChanged
         private readonly INamedTypeSymbol NotifyPropertyChangingSymbol;
         private readonly INamedTypeSymbol NotifyPropertyChangingHandlerSymbol;
         private readonly INamedTypeSymbol AttributeSymbol;
+        private readonly GeneratorExecutionContext Context;
         private readonly AdhocWorkspace workspace = new();
 
-        public ClassGenerator(INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangingHandlerSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangedHandlerSymbol)
+        public ClassGenerator(GeneratorExecutionContext context, INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangingHandlerSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangedHandlerSymbol)
         {
+            Context = context;
             AttributeSymbol = attributeSymbol;
             NotifyPropertyChangingSymbol = notifyChangingSymbol;
             NotifyPropertyChangingHandlerSymbol = notifyChangingHandlerSymbol;
@@ -91,6 +93,7 @@ namespace {nameSpace}
             if (propertyName.Length == 0 || propertyName == field.Name)
             {
                 //TODO: issue a diagnostic that we can't process this field
+                Context.ReportDiagnostic(Diagnostic.Create(BlubbiChangedGenerator.CannotFindSuitablePropertyNameWarning, field.Locations.FirstOrDefault(), field.Name));
                 return null;
             }
 
@@ -98,6 +101,7 @@ namespace {nameSpace}
             {
                 // Not supported
                 // TODO: issue diagnostic
+                Context.ReportDiagnostic(Diagnostic.Create(BlubbiChangedGenerator.FieldIsReadonlyWarning, field.Locations.FirstOrDefault(), field.Name));
                 return null;
             }
 

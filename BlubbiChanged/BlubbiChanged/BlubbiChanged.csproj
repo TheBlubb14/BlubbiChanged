@@ -14,7 +14,7 @@
 		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;MVVM</PackageTags>
 		<RepositoryUrl>https://github.com/TheBlubb14/BlubbiChanged</RepositoryUrl>
 
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.0.0</Version>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>

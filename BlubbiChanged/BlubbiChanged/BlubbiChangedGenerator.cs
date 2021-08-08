@@ -10,8 +10,11 @@ namespace BlubbiChanged
 {
     // Sample from: https://github.com/dotnet/roslyn-sdk/blob/main/samples/CSharp/SourceGenerators/SourceGeneratorSamples/AutoNotifyGenerator.cs
     [Generator]
-    public class AutoNotifyGenerator : ISourceGenerator
+    public class BlubbiChangedGenerator : ISourceGenerator
     {
+        internal static readonly DiagnosticDescriptor FieldIsReadonlyWarning = new("BLUBBICHNG001", "Field is readonly", "Readonly field {0} is not supported", "BlubbiChanged", DiagnosticSeverity.Error, true);
+        internal static readonly DiagnosticDescriptor CannotFindSuitablePropertyNameWarning = new("BLUBBICHNG002", "Cannot find suitable property name", "Cannot find suitable property name for field {0}", "BlubbiChanged", DiagnosticSeverity.Error, true);
+
         public const string attributeText = @"
 namespace BlubbiChanged
 {
@@ -49,7 +52,7 @@ namespace BlubbiChanged
             var notifyChangedSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
             var notifyChangedHandlerSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.PropertyChangedEventHandler");
 
-            using var cc = new ClassGenerator(attributeSymbol, notifyChangingSymbol, notifyChangingHandlerSymbol, notifyChangedSymbol, notifyChangedHandlerSymbol);
+            using var cc = new ClassGenerator(context, attributeSymbol, notifyChangingSymbol, notifyChangingHandlerSymbol, notifyChangedSymbol, notifyChangedHandlerSymbol);
 
 #pragma warning disable RS1024 // Compare symbols correctly, doesnt work reliable with SymbolEqualityComparer.Default.. misses dlls
             foreach (IGrouping<INamedTypeSymbol, IFieldSymbol> group in receiver.Fields.GroupBy(f => f.ContainingType))

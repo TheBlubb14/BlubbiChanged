@@ -17,11 +17,11 @@ namespace ConsoleApp1
         [AutoNotify]
         private static string staticstring;
 
-        [AutoNotify]
-        private readonly string readonlystrings;
+        //[AutoNotify]
+        //private readonly string readonlystrings;
 
-        [AutoNotify]
-        private string _;
+        //[AutoNotify]
+        //private string _;
 
         static void Main(string[] args)
         {

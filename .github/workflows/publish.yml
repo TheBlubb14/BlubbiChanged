@@ -1,0 +1,31 @@
+name: Build and Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        include-prerelease: true
+    - name: Restore dependencies
+      run: dotnet restore BlubbiChanged
+    - name: Build
+      run: dotnet build BlubbiChanged --no-restore
+    - name: Test
+      run: dotnet test BlubbiChanged --no-build --verbosity normal
+    - name: dotnet publish
+      run: dotnet publish BlubbiChanged\BlubbiChanged.csproj --nologo --no-restore --no-build -p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.4  
+      with: 
+        path: BlubbiChanged/BlubbiChanged/bin/Release/netstandard2.0/publish/*.*
+    - name: nuget push
+      run: dotnet nuget push BlubbiChanged/BlubbiChanged/bin/Release/netstandard2.0/publish/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}

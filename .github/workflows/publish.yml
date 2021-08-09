@@ -22,7 +22,7 @@ jobs:
     - name: Test
       run: dotnet test BlubbiChanged --nologo --no-build --verbosity normal
     - name: dotnet publish
-      run: dotnet publish BlubbiChanged\BlubbiChanged.csproj --nologo --no-build -c Release
+      run: dotnet publish BlubbiChanged/BlubbiChanged/BlubbiChanged.csproj --nologo --no-build -c Release
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4  
       with: 

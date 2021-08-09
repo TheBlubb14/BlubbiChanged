@@ -28,6 +28,6 @@ jobs:
       with: 
         path: BlubbiChanged/BlubbiChanged/bin/Release/netstandard2.0/publish/*.*
     - name: dotnet pack
-      run: dotnet pack BlubbiChanged\BlubbiChanged.csproj --nologo --no-build -c Release
+      run: dotnet pack BlubbiChanged/BlubbiChanged/BlubbiChanged.csproj --nologo --no-build -c Release
     - name: nuget push
       run: dotnet nuget push BlubbiChanged/BlubbiChanged/bin/Release/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}

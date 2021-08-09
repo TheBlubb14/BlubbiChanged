@@ -16,16 +16,18 @@ jobs:
         dotnet-version: 6.0.x
         include-prerelease: true
     - name: Restore dependencies
-      run: dotnet restore BlubbiChanged
+      run: dotnet restore BlubbiChanged --nologo 
     - name: Build
-      run: dotnet build BlubbiChanged --no-restore
+      run: dotnet build BlubbiChanged --nologo --no-restore
     - name: Test
-      run: dotnet test BlubbiChanged --no-build --verbosity normal
+      run: dotnet test BlubbiChanged --nologo --no-build --verbosity normal
     - name: dotnet publish
-      run: dotnet publish BlubbiChanged\BlubbiChanged.csproj --nologo --no-restore --no-build -p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
+      run: dotnet publish BlubbiChanged\BlubbiChanged.csproj --nologo --no-build -c Release
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4  
       with: 
         path: BlubbiChanged/BlubbiChanged/bin/Release/netstandard2.0/publish/*.*
+    - name: dotnet pack
+      run: dotnet pack BlubbiChanged\BlubbiChanged.csproj --nologo --no-build -c Release
     - name: nuget push
-      run: dotnet nuget push BlubbiChanged/BlubbiChanged/bin/Release/netstandard2.0/publish/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}
+      run: dotnet nuget push BlubbiChanged/BlubbiChanged/bin/Release/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}

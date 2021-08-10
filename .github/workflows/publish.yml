@@ -18,7 +18,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore BlubbiChanged --nologo 
     - name: Build
-      run: dotnet build BlubbiChanged --nologo --no-restore
+      run: dotnet build BlubbiChanged --nologo --no-restore -c Release
     - name: Test
       run: dotnet test BlubbiChanged --nologo --no-build --verbosity normal
     - name: dotnet publish

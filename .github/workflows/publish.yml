@@ -20,7 +20,7 @@ jobs:
     - name: Build
       run: dotnet build BlubbiChanged --nologo --no-restore -c Release
     - name: Test
-      run: dotnet test BlubbiChanged --nologo --no-build --verbosity normal
+      run: dotnet test BlubbiChanged --nologo --no-build --verbosity normal -c Release
     - name: dotnet publish
       run: dotnet publish BlubbiChanged/BlubbiChanged/BlubbiChanged.csproj --nologo --no-build -c Release
     - name: Upload a Build Artifact

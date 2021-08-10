@@ -30,4 +30,4 @@ jobs:
     - name: dotnet pack
       run: dotnet pack BlubbiChanged/BlubbiChanged/BlubbiChanged.csproj --nologo --no-build -c Release
     - name: nuget push
-      run: dotnet nuget push BlubbiChanged/BlubbiChanged/bin/Release/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }}
+      run: dotnet nuget push BlubbiChanged/BlubbiChanged/bin/Release/*.nupkg -s nuget.org -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate

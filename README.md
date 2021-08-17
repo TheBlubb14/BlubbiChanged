@@ -39,7 +39,7 @@ partial class Program : System.ComponentModel.INotifyPropertyChanging, System.Co
             this.myName = value;
 
             this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("MyName"));
-	    }
+        }
     }
 }
 ```

@@ -17,17 +17,17 @@ partial class Program
 ``` cs
 partial class Program : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
 {
-	/// <inheritdoc/>
-	public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+    /// <inheritdoc/>
+    public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
 
-	/// <inheritdoc/>
-	public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    /// <inheritdoc/>
+    public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
-	/// <summary>
-	/// That is my name
-	/// </summary>
-	public string MyName
-	{
+    /// <summary>
+    /// That is my name
+    /// </summary>
+    public string MyName
+    {
         get => this.myName;
         set
         {
@@ -39,7 +39,7 @@ partial class Program : System.ComponentModel.INotifyPropertyChanging, System.Co
             this.myName = value;
 
             this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("MyName"));
-		}
-	}
+	    }
+    }
 }
 ```

@@ -28,7 +28,7 @@ partial class Program : System.ComponentModel.INotifyPropertyChanging, System.Co
 	/// </summary>
 	public string MyName
 	{
-		get => this.myName;
+        get => this.myName;
 		set
 		{
 			if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.myName, value))

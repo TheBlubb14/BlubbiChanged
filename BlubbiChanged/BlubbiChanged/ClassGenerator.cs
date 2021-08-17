@@ -42,7 +42,7 @@ namespace BlubbiChanged
                 Utils.FormatCode($@"
 namespace {nameSpace}
 {{
-    public partial class {className} : {INotifyPropertyChanging}, {INotifyPropertyChanged}
+    partial class {className} : {INotifyPropertyChanging}, {INotifyPropertyChanged}
     {{
         {PropertyChangingEventHandler(eventMembers)} {PropertyChangedEventHandler(eventMembers)}
 

@@ -29,16 +29,16 @@ partial class Program : System.ComponentModel.INotifyPropertyChanging, System.Co
 	public string MyName
 	{
         get => this.myName;
-		set
-		{
-			if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.myName, value))
-				return;
+        set
+        {
+            if (global::System.Collections.Generic.EqualityComparer<string>.Default.Equals(this.myName, value))
+                return;
 
-			this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs("MyName"));
+            this.PropertyChanging?.Invoke(this, new global::System.ComponentModel.PropertyChangingEventArgs("MyName"));
 
-			this.myName = value;
+            this.myName = value;
 
-			this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("MyName"));
+            this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("MyName"));
 		}
 	}
 }

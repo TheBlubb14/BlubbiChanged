@@ -115,7 +115,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
@@ -160,7 +160,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
@@ -210,7 +210,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
@@ -260,7 +260,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
@@ -305,7 +305,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
@@ -356,7 +356,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
@@ -435,7 +435,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -479,7 +479,7 @@ namespace UnitTest
                     @"
 namespace UnitTest
 {
-    public partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    partial class UnitTestClass : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <inheritdoc/>
         public event global::System.ComponentModel.PropertyChangingEventHandler PropertyChanging;

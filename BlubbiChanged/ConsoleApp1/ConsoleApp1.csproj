@@ -12,7 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BlubbiChanged\BlubbiChanged.csproj"
                       OutputItemType="Analyzer"
-                      ExcludeAssets="all"
                       ReferenceOutputAssembly="false"/>
   </ItemGroup>
   </Project>

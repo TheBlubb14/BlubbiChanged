@@ -3,10 +3,24 @@ using System;
 
 namespace ConsoleApp1
 {
+    [AutoNotifyClass]
+    partial class Programa
+    {
+        private string aaa;
+
+        [AutoNotifyIgnore]
+        private string ignoreMe;
+
+        public Programa()
+        {
+
+        }
+    }
+
     partial class Program
     {
         [AutoNotify]
-        private string blubber;
+        private string blubbeer;
 
         /// <summary>
         /// HEH <see cref="miro"/> <see langword="true"/>
@@ -26,7 +40,6 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-
         }
 
         private void a()

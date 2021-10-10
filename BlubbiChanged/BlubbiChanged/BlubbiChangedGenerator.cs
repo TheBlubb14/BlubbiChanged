@@ -34,9 +34,42 @@ namespace BlubbiChanged
 }
 ";
 
+        public const string classAttributeText = @"
+namespace BlubbiChanged
+{
+    [global::System.AttributeUsage(global::System.AttributeTargets.Class | global::System.AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+    [global::System.Diagnostics.Conditional(""AutoNotifyGenerator_DEBUG"")]
+    internal sealed class AutoNotifyClassAttribute : global::System.Attribute
+    {
+        public AutoNotifyClassAttribute()
+        {
+        }
+    }
+}
+";
+
+        public const string ignoreAttributeText = @"
+namespace BlubbiChanged
+{
+    [global::System.AttributeUsage(global::System.AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+    [global::System.Diagnostics.Conditional(""AutoNotifyGenerator_DEBUG"")]
+    internal sealed class AutoNotifyIgnoreAttribute : global::System.Attribute
+    {
+        public AutoNotifyIgnoreAttribute()
+        {
+        }
+    }
+}
+";
+
         public void Initialize(GeneratorInitializationContext context)
         {
-            context.RegisterForPostInitialization((i) => i.AddSource("AutoNotifyAttribute", attributeText));
+            context.RegisterForPostInitialization((i) =>
+            {
+                i.AddSource("AutoNotifyAttribute", attributeText);
+                i.AddSource("AutoNotifyClassAttribute", classAttributeText);
+                i.AddSource("AutoNotifyIgnoreAttribute", ignoreAttributeText);
+            });
 
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
@@ -47,12 +80,14 @@ namespace BlubbiChanged
                 return;
 
             var attributeSymbol = context.Compilation.GetTypeByMetadataName("BlubbiChanged.AutoNotifyAttribute");
+            var classAttributeSymbol = context.Compilation.GetTypeByMetadataName("BlubbiChanged.AutoNotifyClassAttribute");
+            var ignoreAttributeSymbol = context.Compilation.GetTypeByMetadataName("BlubbiChanged.AutoNotifyIgnoreAttribute");
             var notifyChangingSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanging");
             var notifyChangingHandlerSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.PropertyChangingEventHandler");
             var notifyChangedSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
             var notifyChangedHandlerSymbol = context.Compilation.GetTypeByMetadataName("System.ComponentModel.PropertyChangedEventHandler");
 
-            using var cc = new ClassGenerator(context, attributeSymbol, notifyChangingSymbol, notifyChangingHandlerSymbol, notifyChangedSymbol, notifyChangedHandlerSymbol);
+            using var cc = new ClassGenerator(context, attributeSymbol, classAttributeSymbol, ignoreAttributeSymbol, notifyChangingSymbol, notifyChangingHandlerSymbol, notifyChangedSymbol, notifyChangedHandlerSymbol);
 
 #pragma warning disable RS1024 // Compare symbols correctly, doesnt work reliable with SymbolEqualityComparer.Default.. misses dlls
             foreach (IGrouping<INamedTypeSymbol, IFieldSymbol> group in receiver.Fields.GroupBy(f => f.ContainingType))
@@ -76,7 +111,16 @@ namespace BlubbiChanged
 
             public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {
-                if (context.Node is FieldDeclarationSyntax fieldDeclarationSyntax
+                if (context.Node is ClassDeclarationSyntax classDeclarationSyntax
+                    && classDeclarationSyntax.AttributeLists.Count > 0)
+                {
+                    var symbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+                    if (symbol.GetAttributes().Any(x => x.AttributeClass.ToDisplayString() == "BlubbiChanged.AutoNotifyClassAttribute"))
+                    {
+                        Fields.AddRange(symbol.GetMembers().OfType<IFieldSymbol>());
+                    }
+                }
+                else if (context.Node is FieldDeclarationSyntax fieldDeclarationSyntax
                     && fieldDeclarationSyntax.AttributeLists.Count > 0)
                 {
                     foreach (VariableDeclaratorSyntax variable in fieldDeclarationSyntax.Declaration.Variables)

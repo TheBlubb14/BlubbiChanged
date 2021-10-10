@@ -13,13 +13,17 @@ namespace BlubbiChanged
         private readonly INamedTypeSymbol NotifyPropertyChangingSymbol;
         private readonly INamedTypeSymbol NotifyPropertyChangingHandlerSymbol;
         private readonly INamedTypeSymbol AttributeSymbol;
+        private readonly INamedTypeSymbol AttributeClassSymbol;
+        private readonly INamedTypeSymbol AttributeIgnoreSymbol;
         private readonly GeneratorExecutionContext Context;
         //private readonly AdhocWorkspace workspace = new();
 
-        public ClassGenerator(GeneratorExecutionContext context, INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangingHandlerSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangedHandlerSymbol)
+        public ClassGenerator(GeneratorExecutionContext context, INamedTypeSymbol attributeSymbol, INamedTypeSymbol attributeClassSymbol, INamedTypeSymbol attributeIgnoreSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangingHandlerSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangedHandlerSymbol)
         {
             Context = context;
             AttributeSymbol = attributeSymbol;
+            AttributeClassSymbol = attributeClassSymbol;
+            AttributeIgnoreSymbol = attributeIgnoreSymbol;
             NotifyPropertyChangingSymbol = notifyChangingSymbol;
             NotifyPropertyChangingHandlerSymbol = notifyChangingHandlerSymbol;
             NotifyPropertyChangedSymbol = notifyChangedSymbol;
@@ -74,6 +78,9 @@ namespace {nameSpace}
 
             foreach (var field in fields)
             {
+                if (field.GetAttributes().Any(x => x.AttributeClass.Equals(AttributeIgnoreSymbol, SymbolEqualityComparer.Default)))
+                    continue;
+
                 var s = GenerateProperty(field);
                 if (!string.IsNullOrEmpty(s))
                     builder.AppendLine(s);
@@ -86,8 +93,8 @@ namespace {nameSpace}
         {
             // get the AutoNotify attribute from the field, and any associated data
             var attributeData = field.GetAttributes()
-                .Single(ad => ad.AttributeClass.Equals(AttributeSymbol, SymbolEqualityComparer.Default));
-            var overridenNameOpt = attributeData.NamedArguments.SingleOrDefault(kvp => kvp.Key == "PropertyName").Value;
+                .FirstOrDefault(ad => ad.AttributeClass.Equals(AttributeSymbol, SymbolEqualityComparer.Default));
+            TypedConstant overridenNameOpt = attributeData is null ? new TypedConstant() : attributeData.NamedArguments.SingleOrDefault(kvp => kvp.Key == "PropertyName").Value;
 
             var propertyName = ChooseName(field.Name, overridenNameOpt);
             if (propertyName.Length == 0 || propertyName == field.Name)

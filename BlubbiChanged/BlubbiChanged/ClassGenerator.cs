@@ -14,7 +14,7 @@ namespace BlubbiChanged
         private readonly INamedTypeSymbol NotifyPropertyChangingHandlerSymbol;
         private readonly INamedTypeSymbol AttributeSymbol;
         private readonly GeneratorExecutionContext Context;
-        private readonly AdhocWorkspace workspace = new();
+        //private readonly AdhocWorkspace workspace = new();
 
         public ClassGenerator(GeneratorExecutionContext context, INamedTypeSymbol attributeSymbol, INamedTypeSymbol notifyChangingSymbol, INamedTypeSymbol notifyChangingHandlerSymbol, INamedTypeSymbol notifyChangedSymbol, INamedTypeSymbol notifyChangedHandlerSymbol)
         {
@@ -49,7 +49,7 @@ namespace {nameSpace}
         {GenerateProperties(fields)}
     }}
 }}
-", workspace);
+");
         }
 
         private string PropertyChangedEventHandler(List<IEventSymbol> eventMembers)
@@ -164,7 +164,7 @@ public {field.Type} {propertyName}
 
         public void Dispose()
         {
-            workspace.Dispose();
+            //workspace.Dispose();
         }
     }
 }

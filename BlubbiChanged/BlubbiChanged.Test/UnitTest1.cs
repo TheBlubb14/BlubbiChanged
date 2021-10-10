@@ -11,6 +11,7 @@ using System.Reflection;
 
 namespace BlubbiChanged.Test
 {
+    [Explicit]
     public class Tests
     {
         public static Dictionary<string, string> GetGeneratedOutput<TGenerator>(IDictionary<string, string> sources, bool failOnInvalidSource = false, bool failOnDiagnostigs = true)
@@ -58,12 +59,12 @@ namespace BlubbiChanged.Test
             Assert.That(errors, Is.Empty, msg);
         }
 
-        private AdhocWorkspace Workspace;
+        //private AdhocWorkspace Workspace;
 
         [SetUp]
         public void Setup()
         {
-            Workspace = new();
+            //Workspace = new();
         }
 
         [Test, Explicit]
@@ -86,13 +87,13 @@ namespace BlubbiChanged.Test
                 { "test.cs", input }
             };
             var outputs = GetGeneratedOutput<BlubbiChangedGenerator>(sources);
-            Assert.That(outputs.Last().Value, Is.EqualTo(Utils.FormatCode(expected, Workspace)));
+            Assert.That(outputs.Last().Value, Is.EqualTo(Utils.FormatCode(expected)));
         }
 
         [TearDown]
         public void TearDown()
         {
-            Workspace.Dispose();
+            //Workspace.Dispose();
         }
 
         private static class AutoNotifyGeneratiorTestCases

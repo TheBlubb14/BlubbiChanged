@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <!--<ItemGroup>
@@ -12,7 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BlubbiChanged\BlubbiChanged.csproj"
                       OutputItemType="Analyzer"
-                      ExcludeAssets="all"
                       ReferenceOutputAssembly="false"/>
   </ItemGroup>
   </Project>

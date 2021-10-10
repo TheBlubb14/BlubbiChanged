@@ -14,7 +14,7 @@
 		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;MVVM</PackageTags>
 		<RepositoryUrl>https://github.com/TheBlubb14/BlubbiChanged</RepositoryUrl>
 
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
@@ -31,7 +31,7 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.10.0" PrivateAssets="all" GeneratePathProperty="true" />
 		<None Include="$(PkgMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.10.0" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.0.0-4.final" PrivateAssets="all" GeneratePathProperty="true" />
 		<None Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
 		<PackageReference Include="Humanizer.Core" Version="2.2.0" PrivateAssets="all" GeneratePathProperty="true" />

@@ -14,7 +14,7 @@
 		<PackageTags>C#;Source-Code-Generator;Generator;WPF;INotifyPropertyChanged;INotifyPropertyChanging;MVVM</PackageTags>
 		<RepositoryUrl>https://github.com/TheBlubb14/BlubbiChanged</RepositoryUrl>
 
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
@@ -25,12 +25,6 @@
 		<None Include="$(PkgMicrosoft_CodeAnalysis_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="..\licenses\*.*" Pack="true" PackagePath="license-%(FileName)%(Extension)" Visible="false" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="bin\**" />
-	  <EmbeddedResource Remove="bin\**" />
-	  <None Remove="bin\**" />
 	</ItemGroup>
 	
 	<!--<ItemGroup>
@@ -68,7 +62,7 @@
 
 	<Target Name="BlubbiChanged-GetDependencyTargetPaths">
 		<ItemGroup>
-			<TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_CodeAnalysis_CSharp)\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll" IncludeRuntimeDependency="true" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_CodeAnalysis_CSharp)\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll" IncludeRuntimeDependency="false" />
 			<!--<TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_CodeAnalysis_CSharp_Workspaces)\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGHumanizer_Core)\lib\netstandard1.0\Humanizer.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" IncludeRuntimeDependency="false" />
